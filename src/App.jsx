@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 
 import MessageList from './MessageList.jsx';
 import ChatBar from './ChatBar.jsx';
-
+import { generateRandomId } from "./randomId.js";
 
 
 export default class App extends Component {
@@ -24,13 +24,34 @@ export default class App extends Component {
       }
     ]
     };
+
+    this.keyDown = this.keyDown.bind(this);
   }
+
+
+keyDown(event){
+   if(event.key == 'Enter'){
+   console.log("this is event", event.target.value)
+
+
+    const newMessage = {
+      id: generateRandomId(),
+      username: "Michelle",
+      content: event.target.value
+    };
+
+    const messages = this.state.messages.concat(newMessage)
+
+    this.setState({messages: messages})
+
+  }
+}
 
   render() {
     return (
       <div>
         <MessageList messages={this.state.messages}/>
-        <ChatBar currentUser={this.state.currentUser.name}/>
+        <ChatBar onKeyPress={this.keyDown} currentUser={this.state.currentUser.name}/>
       </div>
     );
   }
