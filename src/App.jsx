@@ -25,35 +25,53 @@ export default class App extends Component {
     ]
     };
 
-    this.keyDown = this.keyDown.bind(this);
+    this.addNewMessage = this.addNewMessage.bind(this);
   }
 
 
-keyDown(event){
-   if(event.key === 'Enter'){
-   console.log("this is event", event.target.value)
+// keyDown(event){
+//    if(event.key === 'Enter'){
+//    // console.log("this is event", event.target.value)
 
 
+//     const newMessage = {
+//       id: generateRandomId(),
+//       username: "Bob",
+//       content: event.target.value
+//     };
+
+//     const messages = this.state.messages.concat(newMessage)
+
+//     event.target.value = ""
+
+//     this.setState({
+//       messages: messages,
+//     })
+
+//   }
+// }
+
+  addNewMessage(messageText) {
     const newMessage = {
       id: generateRandomId(),
-      username: "Michelle",
-      content: event.target.value
+      username: "Bob",
+      content: messageText
     };
 
     const messages = this.state.messages.concat(newMessage)
-    event.target.value = ""
+
     this.setState({
       messages: messages,
     })
-
   }
-}
 
   render() {
     return (
       <div>
         <MessageList messages={this.state.messages}/>
-        <ChatBar onKeyPress={this.keyDown} currentUser={this.state.currentUser.name}/>
+        // <ChatBar onKeyPress={this.keyDown} currentUser={this.state.currentUser.name}/>
+        <ChatBar onMessageSend={this.addNewMessage} currentUser={this.state.currentUser.name}/>
+
       </div>
     );
   }
