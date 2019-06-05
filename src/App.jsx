@@ -30,7 +30,7 @@ export default class App extends Component {
 
 
 keyDown(event){
-   if(event.key == 'Enter'){
+   if(event.key === 'Enter'){
    console.log("this is event", event.target.value)
 
 
@@ -41,8 +41,10 @@ keyDown(event){
     };
 
     const messages = this.state.messages.concat(newMessage)
-
-    this.setState({messages: messages})
+    event.target.value = ""
+    this.setState({
+      messages: messages,
+    })
 
   }
 }

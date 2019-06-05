@@ -3,11 +3,12 @@ import React, { Component } from 'react';
 
 
 export default class ChatBar extends Component {
-  handleKeyPress = (event) => {
-  if(event.key == 'Enter'){
-    console.log(event.target.value)
-  }
-}
+  // handleKeyPress = (event) => {
+  //   event.preventDefault();
+  //   if(event.key == 'Enter'){
+  //     console.log(event.target.value)
+  //   }
+  // }
 
   render() {
     return (
