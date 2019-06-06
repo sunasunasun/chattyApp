@@ -11,11 +11,13 @@ export default class App extends Component {
     this.webSocket = null
     this.state =
     {
-      currentUser: {name: "Bob"}, // optional. if currentUser is not defined, it means the user is Anonymous
+      currentUser: "",
       messages: []
     };
 
     this.addNewMessage = this.addNewMessage.bind(this);
+    this.changeUserName = this.changeUserName.bind(this);
+    // this.componentDidMount = this.componentDidMount.bind(this);
   }
 
 
@@ -31,13 +33,18 @@ export default class App extends Component {
   this.webSocket = webSocket
  }
 
-
+ changeUserName(userNmae){
+     this.setState({
+      currentUser: userNmae
+    })
+ }
 
 
   addNewMessage(messageText) {
+
     const newMessage = {
       id: generateRandomId(),
-      username: "Bob",
+      username: this.state.currentUser,
       content: messageText
     };
 
@@ -49,7 +56,7 @@ export default class App extends Component {
       <div>
         <MessageList messages={this.state.messages}/>
         // <ChatBar onKeyPress={this.keyDown} currentUser={this.state.currentUser.name}/>
-        <ChatBar onMessageSend={this.addNewMessage} currentUser={this.state.currentUser.name}/>
+        <ChatBar onUserNameSend={this.changeUserName} onMessageSend={this.addNewMessage} currentUser={this.state.currentUser.name}/>
 
       </div>
     );
