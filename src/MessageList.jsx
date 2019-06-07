@@ -13,27 +13,27 @@ export default class MessageList extends Component {
      if(message.type==="incomingMessage"){
       return(
         <Message
-        key={ message.id }
-        username={ message.username }
-        content={ message.content }
+          key={ message.id }
+          username={ message.username }
+          content={ message.content }
         />
-      )}else {
+        )}else if(message.type==="incomingNotification"){
         return (
-        <div key ={message.id} className="notification">
-              <span className="notification-content">{message.content}</span>
-              </div>
-)
-}
+          <div key ={message.id} className="notification">
+             <span className="notification-content">{message.content}</span>
+          </div>
+          )
+      }
     });
-console.log(messages)
+    console.log(messages)
 
 
     return (
       <section className="messages">
-        { messages }
+      { messages }
 
       </section>
-    )
+      )
   }
 }
 
