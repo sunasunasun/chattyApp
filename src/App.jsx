@@ -1,7 +1,4 @@
-import React, {
-    Component
-} from 'react';
-
+import React, { Component } from 'react';
 import MessageList from './MessageList.jsx';
 import ChatBar from './ChatBar.jsx';
 
@@ -115,7 +112,7 @@ export default class App extends Component {
                Chatty
               </a>
               < p className = "counter" >
-                { this.state.counter }Users Online
+                { this.state.counter } Users Online
               </p>
             </nav>
 

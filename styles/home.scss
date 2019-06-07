@@ -11,7 +11,7 @@
     }
 
     .chatbar {
-      background: tomato;
+      background: #E6E6FA;
       border-top: 1px solid black;
       bottom: 0;
       display: flex;
@@ -66,7 +66,7 @@
     }
 
     .navbar {
-      background: tomato;
+      background: #E6E6FA;
       border-bottom: 1px solid black;
       height: 60px;
       left: 0;
@@ -91,6 +91,9 @@
     .notification {
       display: flex;
       padding: 30px;
+      color:        #FF8C00;
+      font: bold 20px Helvetica, Arial, Sans-Serif;
+
     }
     .counter {
       float: right;
