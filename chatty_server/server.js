@@ -25,12 +25,25 @@ wss.on('connection', (ws) => {
   });
 
 
-  ws.on('message', function incoming(dataString) {
-    console.log(dataString)
-    console.log(typeof dataString)
+  ws.on('message', function incoming(data) {
+    var dataParse = JSON.parse(data)
+    console.log(dataParse)
+    switch(dataParse.type) {
+      case "postMessage":
+        dataParse.type = "incomingMessage"
+        break;
+      case "postNotification":
+        dataParse.type = "incomingNotification"
+        break;
+      default:
+        // show an error in the console if the message type is unknown
+        throw new Error("Unknown event type " + dataParse.type);
+    }
+ console.log(JSON.stringify(dataParse))
+
     wss.clients.forEach(function each(client) {
       if (client.readyState === WebSocket.OPEN) {
-        client.send(dataString);
+        client.send(JSON.stringify(dataParse));
       }
     });
   });

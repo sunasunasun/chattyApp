@@ -11,51 +11,94 @@ export default class App extends Component {
     this.webSocket = null
     this.state =
     {
+      oldUsername: "",
       currentUser: "",
       messages: []
+      // notification: [],
     };
 
     this.addNewMessage = this.addNewMessage.bind(this);
     this.changeUserName = this.changeUserName.bind(this);
-    // this.componentDidMount = this.componentDidMount.bind(this);
   }
 
 
  componentDidMount(){
   var webSocket = new WebSocket("ws://localhost:3001");
   webSocket.onmessage = (event) => {
-    const message = JSON.parse(event.data)
-    const messages = this.state.messages.concat(message)
-    this.setState({
-      messages: messages
+    const data = JSON.parse(event.data)
+    const messages = this.state.messages.concat(data)
+
+
+    switch(data.type) {
+      case "incomingMessage":
+        // handle incoming message
+        this.setState({
+          messages: messages
+        })
+        break;
+      case "incomingNotification":
+        // handle incoming notification
+        this.setState({
+          messages: messages
+        })
+        break;
+      default:
+        // show an error in the console if the message type is unknown
+        throw new Error("Unknown event type " + data.type);
+    }
+this.setState({
+      oldUsername: this.state.currentUser,
+      //currentUser: userNmae
     })
   }
+
+
   this.webSocket = webSocket
  }
 
+
+
  changeUserName(userNmae){
      this.setState({
+      oldUsername: this.state.currentUser,
       currentUser: userNmae
     })
  }
 
 
+
   addNewMessage(messageText) {
+
+
+let olduser = this.state.oldUsername ?  this.state.oldUsername:  "Anonymous"
+    let notification = {
+      type: "postNotification",
+      content: olduser + " has changed their name to " + this.state.currentUser
+    };
 
     const newMessage = {
       id: generateRandomId(),
-      username: this.state.currentUser,
+      type: "postMessage",
+      username: this.state.currentUser ?  this.state.currentUser:  "Anonymous",
       content: messageText
     };
 
-    this.webSocket.send(JSON.stringify(newMessage))
+    if(this.state.currentUser != this.state.oldUsername){
+    let notification1 = this.state.messages.concat(notification)
+    this.setState({
+      messages: notification1
+    })
+    }
+
+    // console.log(JSON.stringify(newMessage))
+    this.webSocket.send(JSON.stringify(newMessage, notification))
    }
 
   render() {
     return (
       <div>
-        <MessageList messages={this.state.messages}/>
-        // <ChatBar onKeyPress={this.keyDown} currentUser={this.state.currentUser.name}/>
+        <MessageList oldUsername={this.state.oldUsername} currentUser={this.state.currentUser} messages={this.state.messages} notification={this.state.notification}/>
+
         <ChatBar onUserNameSend={this.changeUserName} onMessageSend={this.addNewMessage} currentUser={this.state.currentUser.name}/>
 
       </div>
@@ -69,26 +112,4 @@ export default class App extends Component {
 
 
 
-
-// keyDown(event){
-//    if(event.key === 'Enter'){
-//    // console.log("this is event", event.target.value)
-
-
-//     const newMessage = {
-//       id: generateRandomId(),
-//       username: "Bob",
-//       content: event.target.value
-//     };
-
-//     const messages = this.state.messages.concat(newMessage)
-
-//     event.target.value = ""
-
-//     this.setState({
-//       messages: messages,
-//     })
-
-//   }
-// }
 
