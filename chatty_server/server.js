@@ -1,6 +1,7 @@
 const express = require('express');
 const WebSocket = require('ws');
 const SocketServer = WebSocket.Server;
+const colors = ['yellow', 'blue', 'red', 'violet', 'pink', 'orange'];
 
 // Set the port to 3001
 const PORT = 3001;
@@ -18,10 +19,11 @@ const wss = new SocketServer({ server });
 // When a client connects they are assigned a socket, represented by
 // the ws parameter in the callback.
 wss.on('connection', (ws) => {
-  console.log('Client connected');
 
+  const randomColor = Math.floor(Math.random() * 6);
+  const color = colors[randomColor];
 
-const usersOnLine = {
+  const usersOnLine = {
     type: 'numberOfClients',
     clients: wss.clients.size,
   }
@@ -40,15 +42,18 @@ const usersOnLine = {
     var dataParse = JSON.parse(data)
 
     //var dataParse1 = JSON.parse(not)
-    //console.lo
-    console.log(dataParse)
+
     switch(dataParse.type) {
+
       case "postMessage":
-        dataParse.type = "incomingMessage"
+        dataParse.type = "incomingMessage";
+        dataParse.color = color;
         break;
+
       case "postNotification":
         dataParse.type = "incomingNotification"
         break;
+
       default:
         // show an error in the console if the message type is unknown
         throw new Error("Unknown event type " + dataParse.type);

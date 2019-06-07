@@ -26,11 +26,12 @@ export default class App extends Component {
 
 
     componentDidMount() {
+
         var webSocket = new WebSocket("ws://localhost:3001");
         webSocket.onmessage = (event) => {
             const data = JSON.parse(event.data)
             const messages = this.state.messages.concat(data)
-
+            console.log(data)
             switch (data.type) {
                 case "incomingMessage":
                     // handle incoming message
@@ -53,6 +54,7 @@ export default class App extends Component {
                         return current;
                     });
                     break;
+
                 default:
                     // show an error in the console if the message type is unknown
                     throw new Error("Unknown event type " + data.type);
@@ -77,7 +79,6 @@ export default class App extends Component {
     }
 
 
-
     addNewMessage(messageText) {
         //if username is empty then show Anonymous
         let olduser = this.state.oldUsername ? this.state.oldUsername : "Anonymous"
@@ -91,7 +92,8 @@ export default class App extends Component {
             id: generateRandomId(),
             type: "postMessage",
             username: this.state.currentUser ? this.state.currentUser : "Anonymous",
-            content: messageText
+            content: messageText,
+            color: null
         };
 
         if (this.state.currentUser != this.state.oldUsername) {
@@ -123,7 +125,6 @@ export default class App extends Component {
               oldUsername = { this.state.oldUsername }
               currentUser = { this.state.currentUser }
               messages = { this.state.messages }
-              notification = { this.state.notification }
             />
 
             < ChatBar

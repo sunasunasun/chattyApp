@@ -14,6 +14,7 @@ export default class MessageList extends Component {
                            key = { message.id }
                            username = { message.username }
                            content = { message.content }
+                           color = { message.color }
                         /> )
               } else if (message.type === "incomingNotification") {
                 return ( < div key = { message.id } className = "notification" >
