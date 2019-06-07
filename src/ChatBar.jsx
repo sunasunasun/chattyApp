@@ -30,10 +30,10 @@ export default class ChatBar extends Component {
     return (
       <footer className="chatbar">
        <input
-       name="userNmae"
-       className="chatbar-username"
-       placeholder="Username"
-       onBlur={this.handleBlur}
+        name="userNmae"
+        className="chatbar-username"
+        placeholder="Username"
+        onBlur={this.handleBlur}
         />
        <input
         name="messageText"

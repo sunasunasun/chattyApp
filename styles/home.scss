@@ -41,7 +41,7 @@
 
     .message {
       display: flex;
-      padding: 5px;
+      padding: 10px;
     }
 
     .message.system {
@@ -88,6 +88,10 @@
       text-decoration: none;
     }
 
+    .notification {
+      display: flex;
+      padding: 30px;
+    }
     .counter {
       float: right;
       margin: 20px;
