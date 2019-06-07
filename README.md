@@ -1,9 +1,3 @@
-Stack:
-
-Webpack with Babel, JSX, ES6, webpack dev server (comes with boilerplate)
-WebSockets using Node package ws on the server-side, and native WebSocket on client side
-ReactJS
-
 # Chatty-App!!
 
 Chatty allow users to communicate with each other without having to register accounts. It uses React, a popular front-end library created and used heavily by Facebook as well as modern tools for Node including Webpack and Babel.
