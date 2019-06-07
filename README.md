@@ -25,6 +25,11 @@ Chatty allow users to communicate with each other without having to register acc
 ## Final Product
 !["Chatty"](https://github.com/sunasunasun/chattyApp/blob/master/doc/Screen%20Shot%202019-06-07%20at%2011.52.12%20AM.png?raw=true)
 
+## Stack
+
+Webpack with Babel, JSX, ES6, webpack dev server (comes with boilerplate)
+WebSockets using Node package ws on the server-side, and native WebSocket on client side
+ReactJS
 
 ## Dependencies
 
