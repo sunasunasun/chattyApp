@@ -18,6 +18,15 @@ const wss = new SocketServer({
     server
 });
 
+// Inform all clients helper function
+function sendDatatoClients(data){
+  wss.clients.forEach(function each(client) {
+        if (client.readyState === WebSocket.OPEN) {
+            client.send(JSON.stringify(data));
+        }
+    });
+}
+
 wss.on('connection', (ws) => {
 
     const randomColor = Math.floor(Math.random() * 6);
@@ -28,12 +37,7 @@ wss.on('connection', (ws) => {
         clients: wss.clients.size,
     }
 
-    // Inform all clients
-    wss.clients.forEach(function each(client) {
-        if (client.readyState === WebSocket.OPEN) {
-            client.send(JSON.stringify(usersOnLine));
-        }
-    });
+    sendDatatoClients(usersOnLine)
 
     ws.on('message', function incoming(data) {
         var dataParse = JSON.parse(data)
@@ -56,11 +60,7 @@ wss.on('connection', (ws) => {
                 throw new Error("Unknown event type " + dataParse.type);
         }
 
-        wss.clients.forEach(function each(client) {
-            if (client.readyState === WebSocket.OPEN) {
-                client.send(JSON.stringify(dataParse));
-            }
-        });
+      sendDatatoClients(dataParse)
     });
 
     // Set up a callback for when a client closes the socket. This usually means they closed their browser.
