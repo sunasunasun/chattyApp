@@ -17,15 +17,14 @@ Chatty allow users to communicate with each other without having to register acc
 
 😌 Header displays the count of connected users
 
-🤩 When the number of connected users changes, this count will be updated for all connected users
+😊 When the number of connected users changes, this count will be updated for all connected users
 
 😁 Different users' names will each be coloured differently
 
 
 ## Final Product
-!["Tweet1"](https://github.com/sunasunasun/tweeter/blob/master/doc/tweetc.png?raw=true)
-!["Tweet hide form"](https://github.com/sunasunasun/tweeter/blob/master/doc/tweeta.png?raw=true)
-!["Tweet is empty"](https://github.com/sunasunasun/tweeter/blob/master/doc/tweetb.png?raw=true)
+!["Chatty"](https://github.com/sunasunasun/chattyApp/blob/master/doc/Screen%20Shot%202019-06-07%20at%2011.52.12%20AM.png?raw=true)
+
 
 ## Dependencies
 
