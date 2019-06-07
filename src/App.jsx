@@ -4,12 +4,10 @@ import React, {
 
 import MessageList from './MessageList.jsx';
 import ChatBar from './ChatBar.jsx';
-import {
-    generateRandomId
-} from "./randomId.js";
 
 
 export default class App extends Component {
+  //set original state
     constructor(props) {
         super(props);
         this.webSocket = null
@@ -28,6 +26,8 @@ export default class App extends Component {
     componentDidMount() {
 
         var webSocket = new WebSocket("ws://localhost:3001");
+
+        //receive data from sever
         webSocket.onmessage = (event) => {
             const data = JSON.parse(event.data)
             const messages = this.state.messages.concat(data)
@@ -48,6 +48,7 @@ export default class App extends Component {
                     break;
 
                 case 'numberOfClients':
+                    // handle numberOfClients
                     this.setState(priorState => {
                         const current = Object.create(priorState);
                         current.counter = data.clients;
@@ -64,13 +65,10 @@ export default class App extends Component {
                 //currentUser: userNmae
             })
         }
-
-
         this.webSocket = webSocket
     }
 
-
-
+    //add new username to state
     changeUserName(userNmae) {
         this.setState({
             oldUsername: this.state.currentUser,
@@ -78,24 +76,24 @@ export default class App extends Component {
         })
     }
 
-
     addNewMessage(messageText) {
         //if username is empty then show Anonymous
         let olduser = this.state.oldUsername ? this.state.oldUsername : "Anonymous"
 
         let notification = {
+            id: "",
             type: "postNotification",
             content: olduser + " has changed their name to " + this.state.currentUser
         };
 
         const newMessage = {
-            id: generateRandomId(),
+            id: "",
             type: "postMessage",
             username: this.state.currentUser ? this.state.currentUser : "Anonymous",
             content: messageText,
             color: null
         };
-
+       //if old username is not equal to new username, send notification to server
         if (this.state.currentUser != this.state.oldUsername) {
             let notification1 = this.state.messages.concat(notification)
             this.setState({

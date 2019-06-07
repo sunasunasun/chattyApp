@@ -8,7 +8,7 @@ export default class MessageList extends Component {
     render() {
 
         const messages = this.props.messages.map(message => {
-
+        //deal with incomingMessage and incomingNotification
             if (message.type === "incomingMessage") {
                 return ( < Message
                            key = { message.id }
