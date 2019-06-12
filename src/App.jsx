@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import MessageList from './MessageList.jsx';
 import ChatBar from './ChatBar.jsx';
 
-
 export default class App extends Component {
   //set original state
     constructor(props) {
@@ -19,11 +18,8 @@ export default class App extends Component {
         this.changeUserName = this.changeUserName.bind(this);
     }
 
-
     componentDidMount() {
-
         var webSocket = new WebSocket("ws://localhost:3001");
-
         //receive data from sever
         webSocket.onmessage = (event) => {
             const data = JSON.parse(event.data)
@@ -38,14 +34,12 @@ export default class App extends Component {
                     break;
 
                 case "incomingNotification":
-                    // handle incoming notification
                     this.setState({
                         messages: messages
                     })
                     break;
 
                 case 'numberOfClients':
-                    // handle numberOfClients
                     this.setState(priorState => {
                         const current = Object.create(priorState);
                         current.counter = data.clients;
@@ -57,32 +51,37 @@ export default class App extends Component {
                     // show an error in the console if the message type is unknown
                     throw new Error("Unknown event type " + data.type);
             }
-            this.setState({
-                oldUsername: this.state.currentUser,
-                //currentUser: userNmae
-            })
         }
         this.webSocket = webSocket
     }
 
-    //add new username to state
     changeUserName(userNmae) {
+        console.log("change username", userNmae)
         this.setState({
             oldUsername: this.state.currentUser,
             currentUser: userNmae
-        })
-    }
-
-    addNewMessage(messageText) {
-        //if username is empty then show Anonymous
-        let olduser = this.state.oldUsername ? this.state.oldUsername : "Anonymous"
+        }, () => {
+            let olduser = this.state.oldUsername ? this.state.oldUsername : "Anonymous"
 
         let notification = {
             id: "",
             type: "postNotification",
+            oldUsername: this.state.currentUser,
+            currentUser: userNmae,
             content: olduser + " has changed their name to " + this.state.currentUser
         };
+        //if old username is not equal to new username, send notification to server
+         if (this.state.currentUser != this.state.oldUsername) {
+            let notification1 = this.state.messages.concat(notification)
+            this.setState({
+                messages: notification1
+            })
+            this.webSocket.send(JSON.stringify(notification))
+         }
+        })
+    }
 
+    addNewMessage(messageText) {
         const newMessage = {
             id: "",
             type: "postMessage",
@@ -90,44 +89,32 @@ export default class App extends Component {
             content: messageText,
             color: null
         };
-       //if old username is not equal to new username, send notification to server
-        if (this.state.currentUser != this.state.oldUsername) {
-            let notification1 = this.state.messages.concat(notification)
-            this.setState({
-                messages: notification1
-            })
-            this.webSocket.send(JSON.stringify(notification))
-        }
-
-        // send notification and newMessage to server
+       // send notification and newMessage to server
         this.webSocket.send(JSON.stringify(newMessage))
-
     }
 
     render() {
         return (
-          < div >
-            < nav className = "navbar" >
-              < a className = "navbar-brand" >
+          <div>
+            <nav className = "navbar">
+              <a className = "navbar-brand">
                Chatty
               </a>
-              < p className = "counter" >
+              <p className = "counter">
                 { this.state.counter } Users Online
               </p>
             </nav>
-
-            < MessageList
+            <MessageList
               oldUsername = { this.state.oldUsername }
               currentUser = { this.state.currentUser }
               messages = { this.state.messages }
             />
-
-            < ChatBar
+            <ChatBar
               onUserNameSend = { this.changeUserName }
               onMessageSend = { this.addNewMessage }
               currentUser = { this.state.currentUser.name }
             />
-          < /div >
+          </div>
         );
     }
 }
