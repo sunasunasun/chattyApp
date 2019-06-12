@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 
-
-
 export default class ChatBar extends Component {
 
   constructor(props) {
