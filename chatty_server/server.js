@@ -27,17 +27,20 @@ function sendDatatoClients(data){
     });
 }
 
+function updateAllUserCounts() {
+  const outMsg = JSON.stringify({clients: wss.clients.size, type: "numberOfClients"})
+   // Broadcast to everyone.
+  wss.clients.forEach(function each(client) {
+      client.send(outMsg);
+  })
+}
+
 wss.on('connection', (ws) => {
 
     const randomColor = Math.floor(Math.random() * 6);
     const color = colors[randomColor];
 
-    const usersOnLine = {
-        type: 'numberOfClients',
-        clients: wss.clients.size,
-    }
-
-    sendDatatoClients(usersOnLine)
+    updateAllUserCounts()
 
     ws.on('message', function incoming(data) {
         var dataParse = JSON.parse(data)
@@ -63,6 +66,9 @@ wss.on('connection', (ws) => {
       sendDatatoClients(dataParse)
     });
 
-    // Set up a callback for when a client closes the socket. This usually means they closed their browser.
-    ws.on('close', () => console.log('Client disconnected'));
+    // Set up a callback for when a client closes the socket.
+    ws.on('close', () => {
+       console.log('Client disconnected: ' + wss.clients.size)
+       updateAllUserCounts()
+    });
 });

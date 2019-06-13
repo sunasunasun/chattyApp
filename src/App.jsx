@@ -24,42 +24,34 @@ export default class App extends Component {
         webSocket.onmessage = (event) => {
             const data = JSON.parse(event.data)
             const messages = this.state.messages.concat(data)
-            console.log(data)
+            console.log(data.clients)
             switch (data.type) {
                 case "incomingMessage":
                     // handle incoming message
-                    this.setState({
-                        messages: messages
-                    })
-                    break;
+                  this.setState({messages: messages})
+                break;
 
                 case "incomingNotification":
-                    this.setState({
-                        messages: messages
-                    })
-                    break;
+                  this.setState({messages: messages})
+                  break;
 
                 case 'numberOfClients':
-                    this.setState(priorState => {
-                        const current = Object.create(priorState);
-                        current.counter = data.clients;
-                        return current;
-                    });
-                    break;
+                  this.setState({counter: data.clients})
+                  break;
 
                 default:
                     // show an error in the console if the message type is unknown
-                    throw new Error("Unknown event type " + data.type);
+                  throw new Error("Unknown event type " + data.type);
             }
         }
         this.webSocket = webSocket
     }
 
-    changeUserName(userNmae) {
-        console.log("change username", userNmae)
+    changeUserName(userName) {
+        console.log("change username", userName)
         this.setState({
             oldUsername: this.state.currentUser,
-            currentUser: userNmae
+            currentUser: userName
         }, () => {
             let olduser = this.state.oldUsername ? this.state.oldUsername : "Anonymous"
 
@@ -67,14 +59,14 @@ export default class App extends Component {
             id: "",
             type: "postNotification",
             oldUsername: this.state.currentUser,
-            currentUser: userNmae,
+            currentUser: userName,
             content: olduser + " has changed their name to " + this.state.currentUser
         };
         //if old username is not equal to new username, send notification to server
          if (this.state.currentUser != this.state.oldUsername) {
-            let notification1 = this.state.messages.concat(notification)
+            let newNotification = this.state.messages.concat(notification)
             this.setState({
-                messages: notification1
+                messages: newNotification
             })
             this.webSocket.send(JSON.stringify(notification))
          }

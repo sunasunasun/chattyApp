@@ -4,18 +4,18 @@ export default class ChatBar extends Component {
 
   constructor(props) {
     super(props);
-    this.onKeyPress = this.onKeyPress.bind(this);
-    this.onKeyPress1 = this.onKeyPress1.bind(this);
+    this.onMessageSubmit = this.onMessageSubmit.bind(this);
+    this.onUsernameSubmit = this.onUsernameSubmit.bind(this);
   }
 
-  onKeyPress(event) {
+  onMessageSubmit(event) {
      if(event.key === 'Enter'){
       this.props.onMessageSend(event.target.value);
       event.target.value = ""
     }
   }
 
-  onKeyPress1(event) {
+  onUsernameSubmit(event) {
     if(event.key === 'Enter'){
      this.props.onUserNameSend(event.target.value);
     }
@@ -28,13 +28,13 @@ export default class ChatBar extends Component {
         name="userNmae"
         className="chatbar-username"
         placeholder="Username"
-        onKeyPress={this.onKeyPress1}
+        onKeyPress={this.onUsernameSubmit}
         />
        <input
         name="messageText"
         className="chatbar-message"
         placeholder="Type a message and hit ENTER"
-        onKeyPress={this.onKeyPress}
+        onKeyPress={this.onMessageSubmit}
         />
       </footer>
     )
